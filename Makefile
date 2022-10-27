@@ -5,7 +5,7 @@ DICT_BUILD_TOOL_DIR=devkit
 DICT_PREBUILD_DIR=prebuild
 VENV_DIR=env
 
-slice=$(word $2, $(subst -, ,$1))
+dicts_url=https://www.dicts.info/uddl.php?format=xdxf&l1=$(word 1,$1)&l2=$(word 2,$1)
 
 all: Serbian-English.dictionary
 all: Serbian-Russian.dictionary
@@ -21,7 +21,7 @@ $(DICT_BUILD_TOOL_DIR)/bin: devkit.zip
 	tar -C "$(@D)" -xf "$<" --strip-components 1
 
 %.xdxf:
-	curl -d 'ok=on' "https://www.dicts.info/uddl.php?format=xdxf&l1=$(call slice,$*,1)&l2=$(call slice,$*,2)" -o "$@"
+	curl -d 'ok=on' "$(call dicts_url,$(subst -, ,$*))" -o "$@"
 
 $(VENV_DIR):
 	python3 -m venv $(VENV_DIR)
